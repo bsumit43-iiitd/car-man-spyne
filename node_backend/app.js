@@ -34,6 +34,11 @@ const swaggerOptions = {
 // Create Swagger Docs
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Home Page!");
+});
+
+
 // Serve Swagger UI
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

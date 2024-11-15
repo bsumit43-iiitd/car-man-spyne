@@ -11,7 +11,7 @@ COPY . /app
 
 
 
-EXPOSE 3002
+EXPOSE 4008
 
 
 CMD [ "npm","run","start" ]
