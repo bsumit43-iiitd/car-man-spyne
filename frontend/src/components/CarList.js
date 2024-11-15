@@ -1,26 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, Button, TextField, Box, InputAdornment } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from "../config";
 import CarItem from './CarItem';
 import AddCarForm from './AddCarForm';
 import SearchIcon from '@mui/icons-material/Search';
 
 const CarList = () => {
+  const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [showAddCarForm, setShowAddCarForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchCars = async () => {
+     // Initialize navigate function
+  
     try {
-      const response = await axios.get(`${BASE_URL}/api/cars`);
+      // Retrieve the token from localStorage (or wherever it's stored)
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.error("No token found. Redirecting to login.");
+        navigate('/login'); // Redirect to the login page
+        return;
+      }
+  
+      // Make the GET request with the Authorization header
+      const response = await axios.get(`${BASE_URL}/api/cars`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      });
+  
       setCars(response.data.payload);
       setFilteredCars(response.data.payload); 
     } catch (err) {
       console.error('Error fetching cars:', err);
+      // If the error is related to authentication, redirect to login
+      if (err.response && err.response.status === 401) {
+        console.error("Unauthorized. Redirecting to login.");
+        navigate('/login');
+      }
     }
   };
+  
 
   const handleCarAdded = (newCar) => {
     setCars([...cars, newCar]);

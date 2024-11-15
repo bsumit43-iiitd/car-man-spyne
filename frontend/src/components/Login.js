@@ -8,7 +8,8 @@ import {
   Box,
   Alert,
 } from "@mui/material";
-import { BASE_URL } from "../config";
+import axios from "axios";
+import { BASE_URL } from "../config"; // Make sure BASE_URL is defined correctly
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -16,6 +17,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Track loading state
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,15 +27,28 @@ const Login = () => {
       return;
     }
 
+    setLoading(true); // Set loading to true when the request starts
+
     try {
-      
-      if (email === "user@example.com" && password === "password123") {
-        navigate("/dashboard"); 
+      // Making the POST request to your backend
+      const response = await axios.post(`${BASE_URL}/api/auth/login`, {
+        email,
+        password,
+      });
+
+      // Assuming the response contains the token and user data
+      const { token } = response.data;
+
+      if (token) {
+        localStorage.setItem("token", token); // Store token in localStorage or state
+        navigate("/"); // Redirect to dashboard after successful login
       } else {
         setError("Invalid credentials. Please try again.");
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false); // Set loading to false after the request completes
     }
   };
 
@@ -72,8 +87,9 @@ const Login = () => {
             color="primary"
             fullWidth
             size="large"
+            disabled={loading} // Disable button while loading
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </Button>
         </Box>
 

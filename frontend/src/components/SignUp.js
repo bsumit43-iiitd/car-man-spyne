@@ -8,7 +8,8 @@ import {
   Box,
   Alert,
 } from "@mui/material";
-import { BASE_URL } from "../config";
+import axios from "axios";
+import { BASE_URL } from "../config"; // Make sure BASE_URL is defined correctly
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -18,6 +19,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Track loading state
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -32,14 +34,26 @@ const Signup = () => {
       return;
     }
 
+    setLoading(true); // Set loading to true when the request starts
+
     try {
-      if (email === "user@example.com") {
-        setError("Email already exists.");
+      // Making the POST request to your backend API to create a new user
+      const response = await axios.post(`${BASE_URL}/api/auth/signup`, {
+        name,
+        email,
+        password,
+      });
+
+      // Assuming the response contains success status or user info
+      if (response.data.success) {
+        navigate("/login"); // Redirect to login page after successful signup
       } else {
-        navigate("/login"); 
-    }
+        setError(response.data.message || "Something went wrong. Please try again.");
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false); // Set loading to false after the request completes
     }
   };
 
@@ -95,8 +109,9 @@ const Signup = () => {
             color="primary"
             fullWidth
             size="large"
+            disabled={loading} // Disable button while loading
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </Button>
         </Box>
 

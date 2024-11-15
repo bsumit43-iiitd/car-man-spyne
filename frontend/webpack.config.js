@@ -20,7 +20,7 @@ module.exports = {
   },
   devServer: {
     host: "0.0.0.0",
-    port: 3001, // you can change the port
+    port: 4007, // you can change the port
   },
   module: {
     rules: [
