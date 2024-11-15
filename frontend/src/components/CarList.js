@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, Button, TextField, Box, InputAdornment } from '@mui/material';
 import axios from 'axios';
+import { BASE_URL } from "../config";
 import CarItem from './CarItem';
 import AddCarForm from './AddCarForm';
 import SearchIcon from '@mui/icons-material/Search';
@@ -13,7 +14,7 @@ const CarList = () => {
 
   const fetchCars = async () => {
     try {
-      const response = await axios.get('http://localhost:3002/api/cars');
+      const response = await axios.get(`${BASE_URL}/api/cars`);
       setCars(response.data.payload);
       setFilteredCars(response.data.payload); 
     } catch (err) {

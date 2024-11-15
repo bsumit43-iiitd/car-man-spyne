@@ -8,6 +8,7 @@ import {
   Box,
   Alert,
 } from "@mui/material";
+import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {

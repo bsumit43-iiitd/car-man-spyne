@@ -7,6 +7,7 @@ import {
   TextField,
   Grid,
 } from "@mui/material";
+import { BASE_URL } from "../config";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -18,7 +19,7 @@ const EditCar = () => {
 
   const fetchCarDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3002/api/cars/${id}`);
+      const response = await axios.get(`${BASE_URL}/api/cars/${id}`);
       setCar(response.data.payload);
     } catch (err) {
       console.error("Error fetching car details:", err);
@@ -34,7 +35,7 @@ const EditCar = () => {
       formData.append("tags", car.tags);
       images.forEach((image) => formData.append("images", image));
 
-      await axios.put(`http://localhost:3002/api/cars/${id}`, formData, {
+      await axios.put(`${BASE_URL}/api/cars/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

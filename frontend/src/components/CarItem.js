@@ -2,14 +2,14 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography, Box, Grid, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
+import { BASE_URL } from "../config";
 import axios from 'axios';
 
 const CarItem = ({ car }) => {
   const navigate = useNavigate(); 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3002/api/cars/${car._id}`);
+      await axios.delete(`${BASE_URL}/api/cars/${car._id}`);
       window.location.reload(); 
     } catch (err) {
       console.error('Error deleting car:', err);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Box, Typography, Container, Paper } from '@mui/material';
 import axios from 'axios';
+import { BASE_URL } from "../config";
 
 const AddCarForm = ({ onCarAdded }) => {
   const [title, setTitle] = useState('');
@@ -23,7 +24,7 @@ const AddCarForm = ({ onCarAdded }) => {
     images.forEach((image) => formData.append('images', image));
 
     try {
-      const response = await axios.post('http://localhost:3002/api/cars', formData, {
+      const response = await axios.post(`${BASE_URL}/api/cars`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
+import { BASE_URL } from "../config";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
@@ -20,7 +21,7 @@ const CarDetail = () => {
 
   const fetchCarDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3002/api/cars/${id}`);
+      const response = await axios.get(`${BASE_URL}/api/cars/${id}`);
       setCar(response.data.payload);
     } catch (err) {
       console.error("Error fetching car details:", err);
@@ -29,7 +30,7 @@ const CarDetail = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3002/api/cars/${id}`);
+      await axios.delete(`${BASE_URL}/api/cars/${id}`);
       navigate("/"); 
     } catch (err) {
       console.error("Error deleting car:", err);
