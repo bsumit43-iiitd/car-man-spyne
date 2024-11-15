@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const dotenv = require('dotenv');
 const mongoClient = require('./utils/connectDb');
-
+var authRouter = require('./routes/authRouter');
 var carRouter = require('./routes/carRouter');
 
 var app = express();
@@ -54,7 +54,7 @@ app.use(cookieParser());
 mongoClient.connectDb();
 
 
-// app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/cars', carRouter);
 
 // catch 404 and forward to error handler

@@ -5,7 +5,7 @@ const multer = require("multer");
 const Router = express.Router({ caseSensitive: true });
 const Car = require("../controller/carController");
 const car = new Car();
-
+const authenticateToken  = require("../middleware/authMiddleware")
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -113,6 +113,7 @@ Router.post(
  */
 Router.get(
   "/",
+  authenticateToken,
   catchErrors(async (req, res) => {
     const result = await car.getCars();
     res.status(200).send({
